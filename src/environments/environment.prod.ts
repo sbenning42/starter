@@ -1,3 +1,6 @@
 export const environment = {
-  production: true
+  production: true,
+  logActions: false,
+  logStores: false,
+  withLoader: true,
 };
