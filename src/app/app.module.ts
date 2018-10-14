@@ -10,14 +10,16 @@ import { MaterialModule } from './modules/material/material.module';
 import { ZtoStoreModule } from './store/zto-store/zto-store.module';
 import { ErrorService } from './services/error/error.service';
 import { LoaderService } from './services/loader/loader.service';
-import { LoadingComponent } from './components/dialogs/loading/loading.component';
-import { ErrorComponent } from './components/dialogs/error/error.component';
+import { LoadingComponent } from './containers/dialogs/loading/loading.component';
+import { ErrorComponent } from './containers/dialogs/error/error.component';
+import { GreatingComponent } from './components/greating/greating.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoadingComponent,
-    ErrorComponent
+    ErrorComponent,
+    GreatingComponent
   ],
   entryComponents: [
     LoadingComponent,

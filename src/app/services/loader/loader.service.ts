@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ZtoFacade, LoaderState } from '../../store/zto-store/zto-helpers';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { LoadingComponent } from '../../components/dialogs/loading/loading.component';
+import { LoadingComponent } from '../../containers/dialogs/loading/loading.component';
 
 @Injectable({
   providedIn: 'root'

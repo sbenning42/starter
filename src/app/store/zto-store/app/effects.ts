@@ -19,6 +19,7 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { of, zip } from 'rxjs';
 import { AppFacade } from './facade';
+import { StorageService } from '../../../services/storage/storage.service';
 
 @Injectable()
 export class AppEffects {
@@ -27,6 +28,7 @@ export class AppEffects {
     public store: Store<any>,
     public app: AppFacade,
     public http: HttpClient,
+    public storage: StorageService,
   ) {}
   @Effect()
   checkNetworkStatus = this.actions$.pipe(
@@ -35,7 +37,6 @@ export class AppEffects {
       map((result: any) => new AppOnline(action.header, action.header.loaderStart || false)),
       catchError((err: Error) => of(
         new AppOffline(action.header, action.header.loaderStart || false)
-        // new ErrorDocument({error: {name: err.name, message: err.message, stack: err.stack}}, action.header.correlation),
       )),
       // delay(2000),
     ))
@@ -44,22 +45,13 @@ export class AppEffects {
   @Effect()
   localStorageFetch = this.actions$.pipe(
     ofType(AppActionTypes.localStorageFetch),
-    switchMap((action: AppLsFetch) => {
-      const l = localStorage.length;
-      let key;
-      let index = -1;
-      const storage = {};
-      while ((key = localStorage.key(++index))) {
-        storage[key] = localStorage.getItem(key);
-      }
-      return of(true).pipe(
-        // delay(2000),
-        flatMap(() => [
-          new AppLsFetched({storage}, action.header),
-          new AppLsDocument({storage}, action.header)
-        ]),
-      );
-    })
+    switchMap((action: AppLsFetch) => this.storage.getAll().pipe(
+      // delay(5000),
+      flatMap((storage: {[key: string]: string}) => [
+        new AppLsFetched({storage}, action.header),
+        new AppLsDocument({storage}, action.header)
+      ]),
+    ))
   );
 
   @Effect()
@@ -71,16 +63,10 @@ export class AppEffects {
   @Effect()
   localStorageSave = this.actions$.pipe(
     ofType(AppActionTypes.localStorageSave),
-    switchMap((action: AppLsSave) => {
-      const storage = {};
-      Object.entries(action.payload.storage).forEach(([key, value]) => {
-        storage[key] = value;
-        localStorage.setItem(key, value);
-      });
-      return of(new AppLsSaved({storage}, action.header)).pipe(
-        // delay(2000),
-      );
-    })
+    switchMap((action: AppLsSave) => this.storage.setAll(action.payload.storage).pipe(
+      map((storage: {[key: string]: string}) => new AppLsSaved({storage}, action.header))
+      // delay(2000),
+    ))
   );
 
   @Effect()

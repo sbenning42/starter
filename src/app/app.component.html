@@ -1,9 +1,6 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <ng-container *ngIf="initialized$|async">
-  <div style="text-align:center">
-    <h1>Welcome to {{ name$|async }} !</h1>
-    <h2>Version {{ version$|async }}, Lang: {{ lang$|async }}</h2>
-    <button *ngIf="firstVisit$|async" mat-button (click)="visit()">VISIT</button>
-  </div>
+  <app-greating [name]="name$|async" [version]="version$|async" [lang]="lang$|async"></app-greating>
+  <button *ngIf="firstVisit$|async" mat-button (click)="visit()">VISIT</button>
   <router-outlet></router-outlet>
 </ng-container>

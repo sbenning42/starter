@@ -13,10 +13,11 @@ import { tap, map } from 'rxjs/operators';
 export class AppComponent {
 
   initialized$: Observable<boolean>;
+  firstVisit$: Observable<boolean>;
+
   name$: Observable<string>;
   version$: Observable<string>;
   lang$: Observable<string>;
-  firstVisit$: Observable<boolean>;
 
   constructor(
     public errorService: ErrorService,
@@ -24,12 +25,14 @@ export class AppComponent {
     public appFacade: AppFacade,
   ) {
     this.initialized$ = this.appFacade.initialized$;
-    this.name$ = this.appFacade.name$;
-    this.version$ = this.appFacade.version$;
-    this.lang$ = this.appFacade.lang$;
     this.firstVisit$ = this.appFacade.localStorage$.pipe(
       map((localStorageCache: {[key: string]: string}) => localStorageCache.firstVisit !== 'false'),
     );
+
+    this.name$ = this.appFacade.name$;
+    this.version$ = this.appFacade.version$;
+    this.lang$ = this.appFacade.lang$;
+
     this.initialize();
   }
 

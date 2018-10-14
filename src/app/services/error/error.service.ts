@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ZtoFacade, ErrorState, ErrorPayload } from '../../store/zto-store/zto-helpers';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
-import { ErrorComponent } from '../../components/dialogs/error/error.component';
+import { ErrorComponent } from '../../containers/dialogs/error/error.component';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +31,7 @@ export class ErrorService {
   startRun() {
     this.subscription = this.ztoFacade.error$.subscribe((errorState: ErrorState) => {
       if (errorState.errorHandled !== this.isLastErrorHandled) {
-        (this.isLastErrorHandled !== false) ? this.startError(errorState.lastError) : this.stopError();
+        this.isLastErrorHandled !== false ? this.startError(errorState.lastError) : this.stopError();
       }
     });
   }
