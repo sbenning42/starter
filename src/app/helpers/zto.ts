@@ -23,9 +23,8 @@ export class CrudManager {
   }
 }
 
-export class Uuid {
+export function Uuid() {
 // tslint:disable:no-bitwise
-constructor() {
     let dt = new Date().getTime();
     const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         const r = (dt + Math.random() * 16) % 16 | 0;
@@ -33,6 +32,5 @@ constructor() {
         return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
     return uuid;
-  }
   // tslint:enable:no-bitwise
 }

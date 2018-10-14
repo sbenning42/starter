@@ -7,28 +7,23 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { environment } from '../../../environments/environment';
-import { appReducer } from './app/app.reducer';
-import { AppEffects } from './app/app.effects';
-import { AppFacade } from './app/app.facade';
-import { loaderReducer } from './loader/loader.reducer';
-import { errorReducer } from './error/error.reducer';
-import { LoaderEffects } from './loader/loader.effects';
-import { LoaderFacade } from './loader/loader.facade';
-import { ErrorEffects } from './error/error.effects';
-import { ErrorFacade } from './error/error.facade';
+import { errorStateReducer, loaderStateReducer, LoaderEffects, ZtoFacade, ErrorEffects } from './zto-helpers';
+import { AppFacade } from './app/facade';
+import { AppEffects } from './app/effects';
+import { appStateReducer } from './app/reducer';
 
 @NgModule({
   imports: [
     CommonModule,
     StoreModule.forRoot({
-      app: appReducer,
-      loader: loaderReducer,
-      error: errorReducer,
+      error: errorStateReducer,
+      loader: loaderStateReducer,
+      app: appStateReducer,
     }),
     EffectsModule.forRoot([
-      AppEffects,
       LoaderEffects,
       ErrorEffects,
+      AppEffects,
     ]),
     StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({
@@ -38,12 +33,11 @@ import { ErrorFacade } from './error/error.facade';
   ],
   declarations: [],
   providers: [
-    AppEffects,
+    ZtoFacade,
+    AppFacade,
     LoaderEffects,
     ErrorEffects,
-    AppFacade,
-    LoaderFacade,
-    ErrorFacade,
+    AppEffects,
   ]
 })
 export class ZtoStoreModule { }

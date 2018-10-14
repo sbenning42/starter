@@ -3,4 +3,5 @@ export const environment = {
   logActions: false,
   logStores: false,
   withLoader: true,
+  withError: true,
 };

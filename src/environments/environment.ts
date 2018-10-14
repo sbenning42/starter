@@ -7,6 +7,7 @@ export const environment = {
   logActions: true,
   logStores: true,
   withLoader: true,
+  withError: true,
 };
 
 /*
