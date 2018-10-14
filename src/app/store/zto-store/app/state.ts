@@ -4,6 +4,9 @@ export interface AppState {
   networkStatus: boolean;
   lang: string;
   initialized: boolean;
+  localStorageFetched: boolean;
+  localStorage: {[key: string]: string};
+  localStorageDirty: {[key: string]: boolean};
 }
 export const initialAppState: AppState = {
   name: 'zto-starter',
@@ -11,4 +14,7 @@ export const initialAppState: AppState = {
   networkStatus: false,
   lang: 'fr',
   initialized: false,
+  localStorageFetched: false,
+  localStorage: undefined,
+  localStorageDirty: undefined,
 };

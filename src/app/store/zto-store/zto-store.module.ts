@@ -7,7 +7,7 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { environment } from '../../../environments/environment';
-import { errorStateReducer, loaderStateReducer, LoaderEffects, ZtoFacade, ErrorEffects } from './zto-helpers';
+import { errorStateReducer, loaderStateReducer, LoaderEffects, ZtoFacade, ErrorEffects, LoggerEffects } from './zto-helpers';
 import { AppFacade } from './app/facade';
 import { AppEffects } from './app/effects';
 import { appStateReducer } from './app/reducer';
@@ -21,6 +21,7 @@ import { appStateReducer } from './app/reducer';
       app: appStateReducer,
     }),
     EffectsModule.forRoot([
+      LoggerEffects,
       LoaderEffects,
       ErrorEffects,
       AppEffects,
@@ -35,6 +36,7 @@ import { appStateReducer } from './app/reducer';
   providers: [
     ZtoFacade,
     AppFacade,
+    LoggerEffects,
     LoaderEffects,
     ErrorEffects,
     AppEffects,

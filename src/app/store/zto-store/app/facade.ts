@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { AppState } from './state';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { AppName, AppVersion, AppLang, AppCheckNetworkStatus, AppInitialize } from './actions';
+import { map, first } from 'rxjs/operators';
+import { AppName, AppVersion, AppLang, AppCheckNetworkStatus, AppInitialize, AppLsDocument } from './actions';
 
 @Injectable()
 export class AppFacade {
@@ -14,6 +14,8 @@ export class AppFacade {
   lang$: Observable<string>;
   networkStatus$: Observable<boolean>;
   initialized$: Observable<boolean>;
+  localStorageFetched$: Observable<boolean>;
+  localStorage$: Observable<{[key: string]: string}>;
 
   constructor(public store: Store<any>) {
     this.app$ = this.store.pipe(
@@ -31,6 +33,12 @@ export class AppFacade {
     this.networkStatus$ = this.app$.pipe(
       map((app: AppState) => app.networkStatus)
     );
+    this.localStorageFetched$ = this.app$.pipe(
+      map((app: AppState) => app.localStorageFetched)
+    );
+    this.localStorage$ = this.app$.pipe(
+      map((app: AppState) => app.localStorage)
+    );
     this.initialized$ = this.app$.pipe(
       map((app: AppState) => app.initialized)
     );
@@ -46,9 +54,14 @@ export class AppFacade {
     this.store.dispatch(new AppLang({lang}));
   }
   networkCheck() {
-    this.store.dispatch(new AppCheckNetworkStatus);
+    this.store.dispatch(new AppCheckNetworkStatus({}, false));
   }
   initialize() {
     this.store.dispatch(new AppInitialize);
+  }
+  localStorage(partialStorage: {[key: string]: string}) {
+    this.localStorage$.pipe(first()).subscribe((localStorageCache: {[key: string]: string}) => {
+      this.store.dispatch(new AppLsDocument({storage: {...localStorageCache, ...partialStorage}}, {}));
+    });
   }
 }

@@ -3,6 +3,7 @@
   <div style="text-align:center">
     <h1>Welcome to {{ name$|async }} !</h1>
     <h2>Version {{ version$|async }}, Lang: {{ lang$|async }}</h2>
+    <button *ngIf="firstVisit$|async" mat-button (click)="visit()">VISIT</button>
   </div>
   <router-outlet></router-outlet>
 </ng-container>

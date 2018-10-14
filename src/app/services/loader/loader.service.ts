@@ -47,6 +47,7 @@ export class LoaderService {
       return ;
     }
     this.loadingDialogRef = this.dialog.open(LoadingComponent, {
+      disableClose: true,
       width: '250px',
       data: {content}
     });

@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ErrorPayload } from '../../../store/zto-store/zto-helpers';
+import { ErrorPayload, ZtoFacade } from '../../../store/zto-store/zto-helpers';
+import { environment } from '../../../../environments/environment';
+import { AppFacade } from '../../../store/zto-store/app/facade';
 
 @Component({
   selector: 'app-error',
@@ -9,7 +11,10 @@ import { ErrorPayload } from '../../../store/zto-store/zto-helpers';
 })
 export class ErrorComponent implements OnInit {
 
+  environment = environment;
+
   constructor(
+    public zto: ZtoFacade,
     public dialogRef: MatDialogRef<ErrorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {error: ErrorPayload}
   ) {}
@@ -18,7 +23,7 @@ export class ErrorComponent implements OnInit {
   }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.zto.stopError({});
   }
 
 }

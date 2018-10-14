@@ -3,7 +3,7 @@ import { Uuid } from '../../helpers/zto';
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { OperatorFunction, MonoTypeOperatorFunction, Observable, of } from 'rxjs';
-import { filter, map, delay, takeUntil, first, switchMap, mergeMap } from 'rxjs/operators';
+import { filter, map, delay, takeUntil, first, switchMap, mergeMap, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 
 export interface ErrorPayload {
@@ -122,6 +122,12 @@ export function trackedHeader(header: ZtoHeader = {}): ZtoHeader {
     timestamp: Date.now(),
     ...header,
   };
+}
+
+export function mergeHeaders(...headers: ZtoHeader[]): ZtoHeader {
+  let header = {};
+  headers.forEach(h => header = {...header, ...h});
+  return header;
 }
 
 export class ErrorDocument implements ZtoAction<{error: ErrorPayload}> {
@@ -293,7 +299,6 @@ export class ZtoFacade {
       }
     }, correlation));
   }
-
   stopError(correlation: CorrelationHeader) {
     this.store.dispatch(new ErrorHandle(correlation));
   }
@@ -334,5 +339,20 @@ export class LoaderEffects {
     ofZto(),
     filter((action: ZtoAction<any>) => action.header.loaderStart === false),
     map((action: ZtoAction<any>) => new LoaderStopCommand(action.header.correlation)),
+  );
+}
+
+@Injectable()
+export class LoggerEffects {
+  constructor(public actions$: Actions, public store: Store<any>) {}
+  @Effect({dispatch: false})
+  logActions = this.actions$.pipe(
+    filter(() => environment.logActions),
+    tap((action: Action) => console.log('LoggerEffects@Effect.logActions: ', action)),
+  );
+  @Effect({dispatch: false})
+  logStore = this.store.pipe(
+    filter(() => environment.logStores),
+    tap((state: any) => console.log('LoggerEffects@Effect.logStore: ', state)),
   );
 }

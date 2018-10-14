@@ -6,7 +6,10 @@ import {
   AppVersion,
   AppLang,
   AppOnline,
-  AppOffline
+  AppOffline,
+  AppLsFetched,
+  AppLsDocument,
+  AppLsSaved
 } from './actions';
 
 export function appStateReducer(state: AppState = initialAppState, action: AppActions): AppState {
@@ -52,6 +55,30 @@ export function appStateReducer(state: AppState = initialAppState, action: AppAc
         initialized: true,
       };
     }
+    case AppActionTypes.localStorageFetched: {
+      const typeAction = action as AppLsFetched;
+      return {
+        ...state,
+        localStorageFetched: true,
+        localStorage: typeAction.payload.storage,
+      };
+    }
+    case AppActionTypes.localStorageDocument: {
+      const typeAction = action as AppLsDocument;
+      return {
+        ...state,
+        localStorage: typeAction.payload.storage,
+      };
+    }
+    case AppActionTypes.localStorageSaved: {
+      const typeAction = action as AppLsSaved;
+      return {
+        ...state,
+        localStorageDirty: {},
+      };
+    }
+    case AppActionTypes.localStorageFetch:
+    case AppActionTypes.localStorageSave:
     case AppActionTypes.initialize:
     case AppActionTypes.checkNetworkStatus:
     default: {

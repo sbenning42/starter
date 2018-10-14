@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  logActions: true,
-  logStores: true,
+  logActions: false,
+  logStores: false,
   withLoader: true,
   withError: true,
 };
