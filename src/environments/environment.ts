@@ -8,7 +8,7 @@ export const environment = {
   logStores: false,
   withLoader: true,
   withError: true,
-  ztohub: 'http://hubspectaclesdev.zento.fr',
+  ztohub: 'http://hubspectaclesdev.zento.fr/api/v1',
   steamuloV1: 'http://www.recette.spectacles.carrefour.fr/api',
   steamuloV2: 'http://api.recette.spectacles.carrefour.fr/v2',
 };

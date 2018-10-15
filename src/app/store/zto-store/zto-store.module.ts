@@ -11,6 +11,9 @@ import { errorStateReducer, loaderStateReducer, LoaderEffects, ZtoFacade, ErrorE
 import { AppFacade } from './app/facade';
 import { AppEffects } from './app/effects';
 import { appStateReducer } from './app/reducer';
+import { ztohubStateReducer } from './ztohub/reducer';
+import { ZtohubEffects } from './ztohub/effects';
+import { ZtohubFacade } from './ztohub/facade';
 
 @NgModule({
   imports: [
@@ -19,12 +22,14 @@ import { appStateReducer } from './app/reducer';
       error: errorStateReducer,
       loader: loaderStateReducer,
       app: appStateReducer,
+      ztohub: ztohubStateReducer,
     }),
     EffectsModule.forRoot([
       LoggerEffects,
       LoaderEffects,
       ErrorEffects,
       AppEffects,
+      ZtohubEffects,
     ]),
     StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({
@@ -36,10 +41,12 @@ import { appStateReducer } from './app/reducer';
   providers: [
     ZtoFacade,
     AppFacade,
+    ZtohubFacade,
     LoggerEffects,
     LoaderEffects,
     ErrorEffects,
     AppEffects,
+    ZtohubEffects
   ]
 })
 export class ZtoStoreModule { }

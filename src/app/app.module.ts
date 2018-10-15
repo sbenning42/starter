@@ -13,6 +13,7 @@ import { LoaderService } from './services/loader/loader.service';
 import { LoadingComponent } from './containers/dialogs/loading/loading.component';
 import { ErrorComponent } from './containers/dialogs/error/error.component';
 import { GreatingComponent } from './components/greating/greating.component';
+import { ApiService } from './services/api/api.service';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { GreatingComponent } from './components/greating/greating.component';
   providers: [
     ErrorService,
     LoaderService,
+    ApiService,
   ],
   bootstrap: [AppComponent]
 })

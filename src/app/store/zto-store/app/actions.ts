@@ -48,7 +48,7 @@ export class AppInitialize implements ZtoAction<undefined> {
   type = AppActionTypes.initialize;
   header: ZtoHeader = mergeHeaders(
     correlationHeader({correlationType: AppActionTypes.initialize}),
-    sequenceHeader({sequenceIndex: 0, sequenceLength: 5}),
+    sequenceHeader({sequenceIndex: 0, sequenceLength: 9}),
     startAsyncHeader({loaderContent: 'Initializing App ...'})
   );
 }

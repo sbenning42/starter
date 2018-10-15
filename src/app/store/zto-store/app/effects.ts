@@ -20,6 +20,7 @@ import { HttpClient } from '@angular/common/http';
 import { of, zip } from 'rxjs';
 import { AppFacade } from './facade';
 import { StorageService } from '../../../services/storage/storage.service';
+import { ZtohubThemesFetch, ZtohubFiltersFetch } from '../ztohub/actions';
 
 @Injectable()
 export class AppEffects {
@@ -74,7 +75,9 @@ export class AppEffects {
     ofType(AppActionTypes.initialize),
     flatMap((action: AppInitialize) => [
       new AppCheckNetworkStatus(action.header, false),
-      new AppLsFetch(action.header)
+      new AppLsFetch(action.header),
+      new ZtohubThemesFetch(action.header, false),
+      new ZtohubFiltersFetch(action.header, false),
     ])
   );
   @Effect()
