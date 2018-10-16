@@ -4,6 +4,7 @@ import { ErrorService } from './services/error/error.service';
 import { LoaderService } from './services/loader/loader.service';
 import { AppFacade } from './store/zto-store/app/facade';
 import { tap, map } from 'rxjs/operators';
+import { SampleFacade } from './store/zto-redux-helpers';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,7 @@ export class AppComponent {
     public errorService: ErrorService,
     public loaderService: LoaderService,
     public appFacade: AppFacade,
+    public sampleFacade: SampleFacade,
   ) {
     this.initialized$ = this.appFacade.initialized$;
     this.firstVisit$ = this.appFacade.localStorage$.pipe(
@@ -39,7 +41,8 @@ export class AppComponent {
   initialize() {
     this.loaderService.startRun();
     this.errorService.startRun();
-    this.appFacade.initialize();
+    // this.appFacade.initialize();
+    this.sampleFacade.fetch();
   }
 
   visit() {

@@ -11,6 +11,7 @@ import { errorStateReducer, loaderStateReducer, LoaderEffects, ZtoFacade, ErrorE
 import { AppFacade } from './app/facade';
 import { AppEffects } from './app/effects';
 import { appStateReducer } from './app/reducer';
+import { SampleEffects, sampleStateReducer, SampleFacade, SampleFacadeComponent, SampleService } from '../zto-redux-helpers';
 
 @NgModule({
   imports: [
@@ -19,12 +20,14 @@ import { appStateReducer } from './app/reducer';
       error: errorStateReducer,
       loader: loaderStateReducer,
       app: appStateReducer,
+      sample: sampleStateReducer,
     }),
     EffectsModule.forRoot([
       LoggerEffects,
       LoaderEffects,
       ErrorEffects,
       AppEffects,
+      SampleEffects,
     ]),
     StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({
@@ -32,14 +35,22 @@ import { appStateReducer } from './app/reducer';
       logOnly: !environment.production,
     }),
   ],
-  declarations: [],
+  declarations: [
+    SampleFacadeComponent
+  ],
   providers: [
+    SampleService,
     ZtoFacade,
     AppFacade,
     LoggerEffects,
     LoaderEffects,
     ErrorEffects,
     AppEffects,
+    SampleEffects,
+    SampleFacade,
+  ],
+  exports: [
+    SampleFacadeComponent
   ]
 })
 export class ZtoStoreModule { }
