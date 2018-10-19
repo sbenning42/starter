@@ -1,13 +1,13 @@
+import { ZtoSampleComponent } from '../../containers/zto-sample/zto-sample.component';
+
 export const AppRoutes = [
-  /*
   {
-    path: 'home',
-    component: HomeComponent,
+    path: 'zto-sample',
+    component: ZtoSampleComponent,
   },
   {
     path: '**',
-    redirectTo: '/home',
+    redirectTo: '/zto-sample',
     pathMatch: 'full',
   }
-  */
 ];

@@ -15,9 +15,9 @@ export class LoadingComponent implements OnInit {
 
   ngOnInit() {
   }
-
+/*
   onNoClick(): void {
     this.dialogRef.close();
   }
-
+*/
 }

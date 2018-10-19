@@ -1,0 +1,9 @@
+.zto-sample {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+.zto-sample-name {
+  width: 100%;
+}

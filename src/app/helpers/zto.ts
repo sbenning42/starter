@@ -1,28 +1,3 @@
-export class CrudManager {
-  static read(collection: any[]): any[] {
-    return [...collection];
-  }
-  static readOne(collection: any[], selector: (item: any) => boolean): any {
-    return collection.find(selector);
-  }
-  static create(collection: any[], item: any): any {
-    collection.push(item);
-    return item;
-  }
-  static update(collection: any[], selector: (item: any) => boolean, payload: any): any {
-    const index = collection.findIndex(selector);
-    const item = {
-      ...collection[index],
-      ...payload,
-    };
-    collection[index] = item;
-    return this.read(collection);
-  }
-  static del(collection: any[], selector: (item: any) => boolean): any[] {
-    return collection.filter(selector);
-  }
-}
-
 export function Uuid() {
 // tslint:disable:no-bitwise
     let dt = new Date().getTime();

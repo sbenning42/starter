@@ -1,7 +1,1 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<ng-container *ngIf="initialized$|async">
-  <app-greating [name]="name$|async" [version]="version$|async" [lang]="lang$|async"></app-greating>
-  <button *ngIf="firstVisit$|async" mat-button (click)="visit()">VISIT</button>
-  <router-outlet></router-outlet>
-</ng-container>
-<app-zto-redux-sample-facade></app-zto-redux-sample-facade>
+<router-outlet></router-outlet>
