@@ -1,0 +1,21 @@
+<section class="storage-facade">
+  <h1>Loaded: {{loaded$|async}}</h1>
+  <button mat-button (click)="load()" color="primary" [disabled]="loaded$|async">LOAD</button>
+  <button mat-button (click)="clear()" color="warn">CLEAR</button>
+  <section class="storage-facade-field">
+    <mat-form-field>
+      <input matInput type="text" name="key" placeholder="Key" [(ngModel)]="key">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="text" name="value" placeholder="Value" [(ngModel)]="value">
+    </mat-form-field>
+    <button mat-button (click)="save()" color="primary" [disabled]="!key || !value">SAVE</button>
+    <button mat-button (click)="delete(key)" color="warn" [disabled]="!key">DELETE</button>
+  </section>
+  <h3>Storage:</h3>
+  <mat-list>
+    <mat-list-item *ngFor="let pair of storage$|async">
+      <i>{{pair[0]}}</i>: {{pair[1]}}
+    </mat-list-item>
+  </mat-list>
+</section>

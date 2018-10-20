@@ -20,16 +20,14 @@ import { isCorrelated, isSequenced, isErrorRelated, isLoading } from './helpers'
 
 @Injectable()
 export class ZtoEffects {
-  pendingCorrelations$: Observable<{[id: string]: ZtoHeader}>;
-  pendingSequences$: Observable<{[id: string]: ZtoHeader[]}>;
-  pendingLoadings$: Observable<{[id: string]: ZtoHeader}>;
-  pendingErrors$: Observable<{[id: string]: ZtoHeader}>;
-  constructor(public actions: Actions, public zto: ZtoFacade) {
-    this.pendingCorrelations$ = this.zto.pendingCorrelations$.pipe(first());
-    this.pendingSequences$ = this.zto.pendingSequences$.pipe(first());
-    this.pendingLoadings$ = this.zto.pendingLoadings$.pipe(first());
-    this.pendingErrors$ = this.zto.pendingErrors$.pipe(first());
-  }
+
+  pendingCorrelations$ = this.zto.pendingCorrelations$.pipe(first());
+  pendingSequences$ = this.zto.pendingSequences$.pipe(first());
+  pendingLoadings$ = this.zto.pendingLoadings$.pipe(first());
+  pendingErrors$ = this.zto.pendingErrors$.pipe(first());
+
+  constructor(public actions: Actions, public zto: ZtoFacade) {}
+
   @Effect()
   trackCorrelations = this.actions.pipe(
     isCorrelated(),

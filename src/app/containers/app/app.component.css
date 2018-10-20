@@ -1,0 +1,9 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+.app-name, .app-version, .app-lang, .app-ready, {
+  width: 100%;
+}

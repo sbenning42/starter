@@ -10,13 +10,17 @@ import { environment } from '../../../../environments/environment';
 export class ErrorComponent implements OnInit {
 
   environment = environment;
+  name = '';
+  message = '';
 
   constructor(
     public dialogRef: MatDialogRef<ErrorComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {error: any}
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public data: {error: string}
+  ) {
+  }
 
   ngOnInit() {
+    [this.name, this.message] = this.data.error.split('%');
   }
 
   onNoClick(): void {

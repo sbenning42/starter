@@ -13,6 +13,12 @@ import { ZtoFacade } from './zto-store/facade';
 import { ztoSampleStateReducer } from './zto-sample/reducer';
 import { ZtoSampleEffects } from './zto-sample/effects';
 import { ZtoSampleFacade } from './zto-sample/facade';
+import { appStateReducer } from './app/reducer';
+import { AppEffects } from './app/effects';
+import { AppFacade } from './app/facade';
+import { storageStateReducer } from './storage/reducer';
+import { StorageEffects } from './storage/effects';
+import { StorageFacade } from './storage/facade';
 
 @NgModule({
   imports: [
@@ -20,10 +26,14 @@ import { ZtoSampleFacade } from './zto-sample/facade';
     StoreModule.forRoot({
       zto: ztoStateReducer,
       ztoSample: ztoSampleStateReducer,
+      app: appStateReducer,
+      storage: storageStateReducer,
     }),
     EffectsModule.forRoot([
       ZtoEffects,
       ZtoSampleEffects,
+      AppEffects,
+      StorageEffects,
     ]),
     StoreRouterConnectingModule.forRoot(),
     StoreDevtoolsModule.instrument({
@@ -38,6 +48,10 @@ import { ZtoSampleFacade } from './zto-sample/facade';
     ZtoFacade,
     ZtoSampleEffects,
     ZtoSampleFacade,
+    AppEffects,
+    AppFacade,
+    StorageEffects,
+    StorageFacade,
   ],
   exports: [
   ]

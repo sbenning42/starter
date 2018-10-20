@@ -1,0 +1,17 @@
+<section class="app">
+  <h3 class="app-name">Name: '{{name$|async}}'</h3>
+  <p class="app-version">Version: '{{version$|async}}'</p>
+  <p class="app-lang">Lang: '{{lang$|async}}'</p>
+  <h4 class="app-ready">Ready: '{{ready$|async}}'</h4>
+  <button mat-button (click)="initialize()" [disabled]="ready$|async">INITIALIZE</button>
+  <mat-form-field>
+    <input matInput type="text" placeholder="Name" [(ngModel)]="name" />
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="text" placeholder="Version" [(ngModel)]="version" />
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="text" placeholder="Lang" [(ngModel)]="lang" />
+  </mat-form-field>
+  <button mat-button (click)="update()" [disabled]='!name || !version || !lang'>UPDATE</button>
+</section>

@@ -1,6 +1,15 @@
 import { Action } from '@ngrx/store';
-import { getUid } from './helpers';
-
+export function getUid() {
+  // tslint:disable:no-bitwise
+  let dt = new Date().getTime();
+  const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = (dt + Math.random() * 16) % 16 | 0;
+    dt = Math.floor(dt / 16);
+    return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
+  });
+  return uuid;
+  // tslint:enable:no-bitwise
+}
 export interface ZtoHeader {
   uid?: string;
   timestamp?: number;
@@ -94,7 +103,23 @@ export class ZtoReply<T = any> extends ZtoEvent<T> {
     ));
   }
 }
-export class ZtoError<T = any> extends ZtoReply<T> {}
+export class ZtoError<T = any> extends ZtoReply<T> {
+  constructor(type: string, action: ZtoAction, content: string, header: ZtoHeader = {}) {
+    super(type, action, mergeHeaders(
+      errorStartFactory(type, content),
+      action.header.loadingId ? loadingStopFactory(action.header) : {},
+      header
+    ));
+  }
+}
+export class ZtoResolveError extends ZtoCommand {
+  constructor(type: string, action: ZtoAction, header: ZtoHeader = {}) {
+    super(type, mergeHeaders(
+      errorStopFactory(action.header),
+      header
+    ));
+  }
+}
 export class ZtoSequence<T = any> extends ZtoCommand<T> {
   constructor(type: string, length: number, header: ZtoHeader = {}) {
     super(type, mergeHeaders(
@@ -110,10 +135,4 @@ export class ZtoSequenced<T = any> extends ZtoEvent<T> {
       header
     ));
   }
-}
-
-export abstract class ZtoBaseAction<T = any> implements ZtoAction<T>, Action {
-  abstract type: string;
-  abstract header: ZtoHeader;
-  abstract payload?: T;
 }

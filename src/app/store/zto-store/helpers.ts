@@ -1,7 +1,7 @@
-import { MonoTypeOperatorFunction, Observable, OperatorFunction } from 'rxjs';
+import { MonoTypeOperatorFunction, Observable, OperatorFunction, of, merge, ObservableInput } from 'rxjs';
 import { Action } from '@ngrx/store';
-import { filter, map } from 'rxjs/operators';
-import { ZtoAction } from './models';
+import { filter, map, catchError, mergeMap, delay } from 'rxjs/operators';
+import { ZtoAction, ZtoError, ZtoResolveError, ZtoHeader } from './models';
 
 export function getUid() {
   // tslint:disable:no-bitwise
@@ -22,12 +22,21 @@ export function inTypes(types: string[]): MonoTypeOperatorFunction<Action> {
   return filter((action: Action) => types.includes(action.type));
 }
 export function ofZto(): MonoTypeOperatorFunction<Action> {
-  return filter((action: Action) => !!(<ZtoAction>action).header);
+  return filter((action: Action) => !!(action as ZtoAction).header);
 }
 export function asZto(): OperatorFunction<Action, ZtoAction> {
   return (actions$: Observable<Action>) => actions$.pipe(
     ofZto(),
     map((action: Action) => action as ZtoAction),
+  );
+}
+export function propagateError(
+  type: string,
+  action: ZtoAction,
+  header: ZtoHeader = {},
+): MonoTypeOperatorFunction<ZtoAction> {
+  return (actions$: Observable<ZtoAction>) => actions$.pipe(
+    catchError((error: Error) => of(new ZtoError(type, action, `${error.name}%${error.message}`, header))),
   );
 }
 export function isCorrelated(): OperatorFunction<Action, ZtoAction> {
@@ -54,3 +63,4 @@ export function isErrorRelated(): OperatorFunction<Action, ZtoAction> {
     filter((action: ZtoAction) => !!action.header.errorId),
   );
 }
+

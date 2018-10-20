@@ -4,8 +4,6 @@
 
 export const environment = {
   production: false,
-  logActions: true,
-  logStores: false,
   withLoader: true,
   withError: true,
   ztohub: 'http://hubspectaclesdev.zento.fr',

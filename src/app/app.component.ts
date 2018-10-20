@@ -15,6 +15,8 @@ import {
   loadingStopFactory
 } from './store/zto-store/models';
 import { ZtoSampleFacade } from './store/zto-sample/facade';
+import { AppFacade } from './store/app/facade';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -31,11 +33,17 @@ export class AppComponent {
   lang$: Observable<string>;
 
   constructor(
-    public errorService: ErrorService,
-    public loaderService: LoaderService,
-    public ztoFacade: ZtoFacade,
-    public ztoSampleFacade: ZtoSampleFacade,
+    loader: LoaderService,
+    error: ErrorService,
+    app: AppFacade
   ) {
+    if (environment.withError) {
+      error.run();
+    }
+    if (environment.withLoader) {
+      loader.run();
+    }
+    app.initialize();
     // this.initialize();
   }
 /*
@@ -63,7 +71,8 @@ export class AppComponent {
     setTimeout(() => {
       this.ztoFacade.store.dispatch(new ZtoReply('[Zto Sample] reply', ztoRequest));
     }, 2000);
-    */
+
   }
+  */
 
 }

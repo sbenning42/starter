@@ -1,0 +1,17 @@
+.storage-facade {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+.storage-facade > * {
+  width: 100%;
+}
+.storage-facade-field {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.storage-facade-field > * {
+  width: 100%;
+}

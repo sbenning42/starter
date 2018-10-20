@@ -1,0 +1,36 @@
+<section>
+  <form class="store-creator" [formGroup]="storeForm">
+    <mat-form-field>
+      <input type="text" formControlName="stateName" placeholder="State name *" matInput>
+      <mat-error *ngIf="stateName.hasError('required')">
+        <p>State name is required</p>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <textarea type="text" formControlName="stateModel" placeholder="State model *" matInput matTextareaAutosize  onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'    '+v.substring(e);this.selectionStart=this.selectionEnd=s+4;return false;}"></textarea>
+        <mat-error *ngIf="stateModel.hasError('required')">
+          <p>State model is required</p>
+        </mat-error>
+      </mat-form-field>
+    <mat-form-field>
+      <input type="text" formControlName="actionName" placeholder="Action name" matInput>
+    </mat-form-field>
+    <button mat-button (click)="addAction()" [disabled]="!actionName.value">ADD ACTION</button>
+    <ng-container formArrayName="actions">
+      <div class="store-creator" *ngFor="let action of actions.controls; let i = index" [formGroupName]="i">
+        <mat-form-field>
+          <mat-label>{{ action.get('name').value }}</mat-label>
+          <mat-select formControlName="type" placeholder="Type *">
+            <mat-option *ngFor="let typeDesc of typeDescs" [value]="typeDesc.value">
+              {{typeDesc.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+        <textarea type="text" formControlName="payload" placeholder="Payload *" matInput matTextareaAutosize  onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'    '+v.substring(e);this.selectionStart=this.selectionEnd=s+4;return false;}"></textarea>
+        </mat-form-field>
+      </div>
+    </ng-container>
+    <button mat-button (click)="generate()" [disabled]="storeForm.invalid">GENERATE</button>
+  </form>
+</section>

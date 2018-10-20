@@ -17,6 +17,10 @@ import { ErrorComponent } from './containers/dialogs/error/error.component';
 
 import { GreatingComponent } from './components/greating/greating.component';
 import { ZtoSampleComponent } from './containers/zto-sample/zto-sample.component';
+import { AppStateComponent } from './containers/app/app.component';
+import { StoreCreatorComponent } from './components/store-creator/store-creator.component';
+import { ActionCreatorComponent } from './components/action-creator/action-creator.component';
+import { StorageFacadeComponent } from './containers/storage-facade/storage-facade.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +28,11 @@ import { ZtoSampleComponent } from './containers/zto-sample/zto-sample.component
     LoadingComponent,
     ErrorComponent,
     GreatingComponent,
-    ZtoSampleComponent
+    ZtoSampleComponent,
+    AppStateComponent,
+    StoreCreatorComponent,
+    ActionCreatorComponent,
+    StorageFacadeComponent,
   ],
   entryComponents: [
     LoadingComponent,
