@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { StorageFacade } from 'src/app/store/storage/facade';
 import { StorageState } from 'src/app/store/storage/state';
 import { Observable } from 'rxjs';
-import { map, first } from 'rxjs/operators';
+import { map, first, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-storage-facade',
@@ -12,7 +12,7 @@ import { map, first } from 'rxjs/operators';
 export class StorageFacadeComponent implements OnInit {
 
   storage$: Observable<[string, string][]> = this.storage.storage$.pipe(
-    map((storage: {[id: string]: string}) => Object.entries(storage))
+    map((storage: {[id: string]: string}) => Object.entries(storage)),
   );
   loaded$: Observable<boolean> = this.storage.loaded$;
 

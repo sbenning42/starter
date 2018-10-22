@@ -21,6 +21,10 @@ import { AppStateComponent } from './containers/app/app.component';
 import { StoreCreatorComponent } from './components/store-creator/store-creator.component';
 import { ActionCreatorComponent } from './components/action-creator/action-creator.component';
 import { StorageFacadeComponent } from './containers/storage-facade/storage-facade.component';
+import { HomeComponent } from './containers/home/home.component';
+import { HeaderComponent } from './containers/header/header.component';
+import { StarterHeaderComponent } from './containers/starter-header/starter-header.component';
+import { SocialModule } from './modules/social/social.module';
 
 @NgModule({
   declarations: [
@@ -33,6 +37,9 @@ import { StorageFacadeComponent } from './containers/storage-facade/storage-faca
     StoreCreatorComponent,
     ActionCreatorComponent,
     StorageFacadeComponent,
+    HomeComponent,
+    HeaderComponent,
+    StarterHeaderComponent,
   ],
   entryComponents: [
     LoadingComponent,
@@ -45,6 +52,7 @@ import { StorageFacadeComponent } from './containers/storage-facade/storage-faca
     ReactiveFormsModule,
     RoutingModule,
     MaterialModule,
+    SocialModule,
     ZtoStoreModule,
   ],
   providers: [

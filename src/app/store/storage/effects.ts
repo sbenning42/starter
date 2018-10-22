@@ -20,7 +20,7 @@ import {
 } from './actions';
 import { StorageFacade } from './facade';
 import { StorageService } from 'src/app/services/storage/storage.service';
-import { ofType, inTypes, propagateError } from '../zto-store/helpers';
+import { ofType, inTypes, propagateError, reqRep } from '../zto-store/helpers';
 import { ZtoError, mergeHeaders, loadingStopFactory, sequencedFactory, errorStartFactory } from '../zto-store/models';
 import { of } from 'rxjs';
 
@@ -41,44 +41,45 @@ export class StorageEffects {
   @Effect()
   firstLload = this.actions$.pipe(
     ofType(StorageActionTypes.FirstLoadRequest),
-    switchMap((load: StorageFirstLoadRequest) => this.storage.getAll().pipe(
-      map((storage: {[id: string]: string}) => new StorageFirstLoadReply({storage}, load)),
-      propagateError(`${load.type} Error`, load, sequencedFactory(load.header)),
-    ))
+    reqRep(
+      (load: StorageFirstLoadRequest) => this.storage.getAll(),
+      (storage: {[id: string]: string}, load: StorageFirstLoadRequest) => new StorageFirstLoadReply({storage}, load),
+      (load: StorageFirstLoadRequest) => sequencedFactory(load.header),
+    ),
   );
   @Effect()
   load = this.actions$.pipe(
     ofType(StorageActionTypes.LoadRequest),
-    switchMap((load: StorageLoadRequest) => this.storage.getAll().pipe(
-      map((storage: {[id: string]: string}) => new StorageLoadReply({storage}, load)),
-      propagateError(`${load.type} Error`, load),
-    ))
+    reqRep(
+      (load: StorageLoadRequest) => this.storage.getAll(),
+      (storage: {[id: string]: string}, load: StorageLoadRequest) => new StorageLoadReply({storage}, load),
+    ),
   );
 
   @Effect()
   save = this.actions$.pipe(
     ofType(StorageActionTypes.SaveRequest),
-    switchMap((save: StorageSaveRequest) => this.storage.setAll(save.payload.storage).pipe(
-      map((storage: {[id: string]: string}) => new StorageSaveReply({storage}, save)),
-      propagateError(`${save.type} Error`, save),
-    ))
+    reqRep(
+      (save: StorageSaveRequest) => this.storage.setAll(save.payload.storage),
+      (storage: {[id: string]: string}, save: StorageSaveRequest) => new StorageSaveReply({storage}, save),
+    ),
   );
 
   @Effect()
   delete = this.actions$.pipe(
     ofType(StorageActionTypes.DeleteRequest),
-    switchMap((del: StorageDeleteRequest) => this.storage.removeItem(del.payload.key).pipe(
-      map((key: string) => new StorageDeleteReply({key}, del)),
-      propagateError(`${del.type} Error`, del),
-    ))
+    reqRep(
+      (del: StorageDeleteRequest) => this.storage.removeItem(del.payload.key),
+      (key: string, del: StorageDeleteRequest) => new StorageDeleteReply({key}, del),
+    ),
   );
 
   @Effect()
   clear = this.actions$.pipe(
     ofType(StorageActionTypes.ClearRequest),
-    switchMap((clear: StorageClearRequest) => this.storage.clear().pipe(
-      map(() => new StorageClearReply({}, clear)),
-      propagateError(`${clear.type} Error`, clear),
-    ))
+    reqRep(
+      (clear: StorageDeleteRequest) => this.storage.clear(),
+      (resp: any, clear: StorageDeleteRequest) => new StorageClearReply({}, clear),
+    ),
   );
 }

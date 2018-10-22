@@ -1,7 +1,7 @@
-import { MonoTypeOperatorFunction, Observable, OperatorFunction, of, merge, ObservableInput } from 'rxjs';
+import { MonoTypeOperatorFunction, Observable, OperatorFunction, of, merge, ObservableInput, throwError } from 'rxjs';
 import { Action } from '@ngrx/store';
-import { filter, map, catchError, mergeMap, delay } from 'rxjs/operators';
-import { ZtoAction, ZtoError, ZtoResolveError, ZtoHeader } from './models';
+import { filter, map, catchError, mergeMap, delay, switchMap, first, retry } from 'rxjs/operators';
+import { ZtoAction, ZtoError, ZtoResolveError, ZtoHeader, ZtoRequest, ZtoReply } from './models';
 
 export function getUid() {
   // tslint:disable:no-bitwise
@@ -39,6 +39,7 @@ export function propagateError(
     catchError((error: Error) => of(new ZtoError(type, action, `${error.name}%${error.message}`, header))),
   );
 }
+export const handleError = propagateError;
 export function isCorrelated(): OperatorFunction<Action, ZtoAction> {
   return (actions$: Observable<Action>) => actions$.pipe(
     asZto(),
@@ -61,6 +62,30 @@ export function isErrorRelated(): OperatorFunction<Action, ZtoAction> {
   return (actions$: Observable<Action>) => actions$.pipe(
     asZto(),
     filter((action: ZtoAction) => !!action.header.errorId),
+  );
+}
+export function reqRep(
+  sideEffect: (req: ZtoRequest) => Observable<any>,
+  success: (resp: any, req: ZtoRequest) => ZtoReply,
+  errorHeader: (req: ZtoRequest) => ZtoHeader = () => ({}),
+  concurent: number = 1,
+  extra: {
+    retryTime?: number,
+    withErrorHandling?: boolean,
+    delayTime?: number,
+    throwErr?: Error,
+  } = {},
+): OperatorFunction<ZtoRequest, ZtoReply> {
+  const noop = map((r: any) => r);
+  const flateningStrategy = concurent > 1 ? (flatFn) => mergeMap(flatFn, concurent > 25 ? 25 : concurent) : switchMap;
+  return (actions$: Observable<ZtoAction>) => actions$.pipe(
+    flateningStrategy((request: ZtoRequest) => sideEffect(request).pipe(first(),
+      extra.delayTime > -1 ? delay(extra.delayTime) : noop,
+      extra.throwErr !== undefined ? switchMap(() => throwError(extra.throwErr)) : noop,
+      extra.retryTime > 0 ? retry(extra.retryTime) : noop,
+      map((response: any) => success(response, request)),
+      extra.withErrorHandling !== false ? handleError(`${request.type} Error`, request, errorHeader(request)) : noop,
+    )),
   );
 }
 

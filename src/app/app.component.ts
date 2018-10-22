@@ -17,6 +17,7 @@ import {
 import { ZtoSampleFacade } from './store/zto-sample/facade';
 import { AppFacade } from './store/app/facade';
 import { environment } from 'src/environments/environment';
+import { AuthService, LinkedinLoginProvider, GoogleLoginProvider, FacebookLoginProvider } from 'angular-6-social-login';
 
 @Component({
   selector: 'app-root',
@@ -25,17 +26,15 @@ import { environment } from 'src/environments/environment';
 })
 export class AppComponent {
 
-  initialized$: Observable<boolean>;
-  firstVisit$: Observable<boolean>;
+  env = environment;
 
-  name$: Observable<string>;
-  version$: Observable<string>;
-  lang$: Observable<string>;
+  initialized$: Observable<boolean>;
 
   constructor(
     loader: LoaderService,
     error: ErrorService,
-    app: AppFacade
+    app: AppFacade,
+    private socialAuthService: AuthService,
   ) {
     if (environment.withError) {
       error.run();
@@ -44,35 +43,24 @@ export class AppComponent {
       loader.run();
     }
     app.initialize();
-    // this.initialize();
+    this.initialized$ = app.ready$;
   }
-/*
-  initialize() {
+  public socialSignIn(socialPlatform: string) {
+    let socialPlatformProvider;
+    if (socialPlatform === 'facebook') {
+      socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
+    } else if (socialPlatform === 'google') {
+      socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;
+    } else if (socialPlatform === 'linkedin') {
+      socialPlatformProvider = LinkedinLoginProvider.PROVIDER_ID;
+    }
 
-    const ztosRequest = new ZtoSequence('[Zto Sample] s1 request', 4);
-    this.ztoFacade.store.dispatch(ztosRequest);
-    this.ztoFacade.store.dispatch(new ZtoSequenced('[Zto Sample] s1-1 reply', ztosRequest));
-    this.ztoFacade.store.dispatch(new ZtoSequenced('[Zto Sample] s1-2 reply', ztosRequest));
-    this.ztoFacade.store.dispatch(new ZtoSequenced('[Zto Sample] s1-3 reply', ztosRequest));
-
-    let ztoRequest;
-    setTimeout(() => {
-    ztoRequest = new ZtoRequest('[Zto Sample] request', loadingStartFactory('[Zto Sample] request', 'Sample Loader'));
-    this.ztoFacade.store.dispatch(ztoRequest);
-    }, 500);
-    setTimeout(() => {
-      this.ztoFacade.store.dispatch(new ZtoReply('[Zto Sample] reply', ztoRequest, loadingStopFactory(ztoRequest.header)));
-    }, 1000);
-
-    setTimeout(() => {
-      ztoRequest = new ZtoRequest('[Zto Sample] request');
-      this.ztoFacade.store.dispatch(ztoRequest);
-    }, 1500);
-    setTimeout(() => {
-      this.ztoFacade.store.dispatch(new ZtoReply('[Zto Sample] reply', ztoRequest));
-    }, 2000);
-
+    this.socialAuthService.signIn(socialPlatformProvider).then(
+      (userData) => {
+        console.log(socialPlatform + ' sign in data : ' , userData);
+        // Now sign-in with userData
+        // ...
+      }
+    );
   }
-  */
-
 }

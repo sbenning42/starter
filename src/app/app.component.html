@@ -1,7 +1,11 @@
-<mat-toolbar>
-  <a mat-button [routerLink]="['/app']">APP</a>
-  <a mat-button [routerLink]="['/zto-sample']">SAMPLE</a>
-  <a mat-button [routerLink]="['/storage-facade']">STORAGE</a>
-  <a mat-button [routerLink]="['/store-creator']">CREATOR</a>
-</mat-toolbar>
-<router-outlet></router-outlet>
+<ng-container [ngSwitch]="env.starterHeader">
+  <app-starter-header *ngSwitchCase="true"></app-starter-header>
+  <app-header *ngSwitchDefault></app-header>
+</ng-container>
+<router-outlet *ngIf="initialized$|async"></router-outlet>
+<h1>
+  Sign in
+</h1>
+
+<button (click)="socialSignIn('facebook')">Sign in with Facebook</button>
+<button (click)="socialSignIn('google')">Sign in with Google</button>

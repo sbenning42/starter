@@ -25,12 +25,15 @@ export enum StorageActionTypes {
 }
 export class StorageClearReply extends ZtoReply {
   constructor(public payload: {}, action: ZtoAction) {
-    super(StorageActionTypes.ClearReply, action);
+    super(StorageActionTypes.ClearReply, action, loadingStopFactory(action.header));
   }
 }
 export class StorageClearRequest extends ZtoRequest {
   constructor() {
-    super(StorageActionTypes.ClearRequest);
+    super(
+      StorageActionTypes.ClearRequest,
+      loadingStartFactory(StorageActionTypes.ClearRequest, `Clearing storage ...`),
+    );
   }
 }
 export class StorageSaveReply extends ZtoReply {
@@ -42,7 +45,7 @@ export class StorageSaveReply extends ZtoReply {
     },
     action: ZtoAction
   ) {
-    super(StorageActionTypes.SaveReply, action);
+    super(StorageActionTypes.SaveReply, action, loadingStopFactory(action.header));
   }
 }
 export class StorageSaveRequest extends ZtoRequest {
@@ -53,7 +56,12 @@ export class StorageSaveRequest extends ZtoRequest {
       };
     }
   ) {
-    super(StorageActionTypes.SaveRequest);
+    super(
+      StorageActionTypes.SaveRequest,
+      loadingStartFactory(StorageActionTypes.DeleteRequest, `Saving storage ${
+        Object.keys(payload.storage).toString()
+      } ...`),
+    );
   }
 }
 export class StorageFirstLoadReply extends ZtoReply {
@@ -103,16 +111,19 @@ export class StorageDeleteReply extends ZtoReply {
     },
     action: ZtoAction
   ) {
-    super(StorageActionTypes.DeleteReply, action);
+    super(StorageActionTypes.DeleteReply, action, loadingStopFactory(action.header));
   }
 }
 export class StorageDeleteRequest extends ZtoRequest {
   constructor(
     public payload: {
       key: string
-    }
+    },
   ) {
-    super(StorageActionTypes.DeleteRequest);
+    super(
+      StorageActionTypes.DeleteRequest,
+      loadingStartFactory(StorageActionTypes.DeleteRequest, `Deleting item ${payload.key} ...`),
+    );
   }
 }
 export type StorageActions =
