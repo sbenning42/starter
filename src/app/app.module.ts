@@ -24,7 +24,7 @@ import { StorageFacadeComponent } from './containers/storage-facade/storage-faca
 import { HomeComponent } from './containers/home/home.component';
 import { HeaderComponent } from './containers/header/header.component';
 import { StarterHeaderComponent } from './containers/starter-header/starter-header.component';
-import { SocialModule } from './modules/social/social.module';
+// import { SocialModule } from './modules/social/social.module';
 
 @NgModule({
   declarations: [
@@ -52,7 +52,7 @@ import { SocialModule } from './modules/social/social.module';
     ReactiveFormsModule,
     RoutingModule,
     MaterialModule,
-    SocialModule,
+    // SocialModule,
     ZtoStoreModule,
   ],
   providers: [

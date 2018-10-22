@@ -17,7 +17,7 @@ import {
 import { ZtoSampleFacade } from './store/zto-sample/facade';
 import { AppFacade } from './store/app/facade';
 import { environment } from 'src/environments/environment';
-import { AuthService, LinkedinLoginProvider, GoogleLoginProvider, FacebookLoginProvider } from 'angular-6-social-login';
+// import { AuthService, LinkedinLoginProvider, GoogleLoginProvider, FacebookLoginProvider } from 'angular-6-social-login';
 
 @Component({
   selector: 'app-root',
@@ -34,7 +34,7 @@ export class AppComponent {
     loader: LoaderService,
     error: ErrorService,
     app: AppFacade,
-    private socialAuthService: AuthService,
+    // private socialAuthService: AuthService,
   ) {
     if (environment.withError) {
       error.run();
@@ -45,6 +45,7 @@ export class AppComponent {
     app.initialize();
     this.initialized$ = app.ready$;
   }
+  /*
   public socialSignIn(socialPlatform: string) {
     let socialPlatformProvider;
     if (socialPlatform === 'facebook') {
@@ -63,4 +64,6 @@ export class AppComponent {
       }
     );
   }
+  */
+
 }
